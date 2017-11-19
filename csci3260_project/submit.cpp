@@ -223,5 +223,5 @@ int main(int argc, char *argv[])
 	/*Enter the GLUT event processing loop which never returns.*/
 	glutMainLoop();
 
-	return 0;
+	return -1;
 }
