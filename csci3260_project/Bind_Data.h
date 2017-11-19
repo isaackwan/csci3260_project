@@ -10,7 +10,7 @@
 #include <vector>
 
 void bindEarth(const char * path);
-
+void bindAeroplane(const char * path);
 
 
 /*** END OF FILE ***/

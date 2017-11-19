@@ -26,9 +26,12 @@ int  mainWindowID;
 GLint programID;
 
 GLuint TextureEarth;
+GLuint TextureAeroplane;
 
 extern GLuint earthVao;
+extern GLuint aeroplaneVao;
 extern int drawEarthSize;
+extern int drawAeroplaneSize;
 // view matrix
 glm::mat4 common_viewM;
 glm::mat4 common_projection;
@@ -84,12 +87,14 @@ void Mouse_Wheel_Func(int button, int state, int x, int y)
 void LoadAllTextures()
 {
 	TextureEarth = loadBMP2Texture("texture/earth.bmp");
+	TextureAeroplane = loadBMP2Texture("texture/helicopter.bmp");
 }
 
 void sendDataToOpenGL()
 {
 	//Load objects and bind to VAO & VBO
 	bindEarth("model_obj/planet.obj");
+	bindAeroplane("model_obj/Arc170.obj");
 	// load all textures
 	LoadAllTextures();
 }
@@ -129,6 +134,7 @@ void set_lighting()
 
 void drawEarth(void)
 {
+	return;
 	//earth
 	GLfloat scale_fact = 3.0f;
 
@@ -157,6 +163,36 @@ void drawEarth(void)
 	glDrawArrays(GL_TRIANGLES, 0, drawEarthSize);
 }
 
+
+void drawAeroplane(void)
+{
+	//earth
+	GLfloat scale_fact = 3.0f;
+
+	glUseProgram(programID);
+
+	glBindVertexArray(earthVao);
+	glm::mat4 scale_M = glm::scale(glm::mat4(1.0f), glm::vec3(scale_fact));
+	glm::mat4 trans_M = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::mat4 Model = trans_M * scale_M;
+
+	GLint M_ID = glGetUniformLocation(programID, "MM");
+	glUniformMatrix4fv(M_ID, 1, GL_FALSE, &Model[0][0]);
+	GLint V_ID = glGetUniformLocation(programID, "VM");
+	glUniformMatrix4fv(V_ID, 1, GL_FALSE, &common_viewM[0][0]);
+	GLint P_ID = glGetUniformLocation(programID, "PM");
+	glUniformMatrix4fv(P_ID, 1, GL_FALSE, &common_projection[0][0]);
+
+	// texture
+	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, TextureAeroplane);
+	glUniform1i(TextureID, 1);
+	glActiveTexture(GL_TEXTURE2);
+
+	glDrawArrays(GL_TRIANGLES, 0, drawEarthSize);
+}
+
 void paintGL(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
@@ -172,6 +208,7 @@ void paintGL(void)
 	set_lighting();
 	// draw earth
 	drawEarth();
+	drawAeroplane();
 
 	glutSwapBuffers();
 	glutPostRedisplay();
