@@ -51,6 +51,14 @@ float a_brightness = 1.0f;
 float d_brightness = 0.0f;
 float s_brightness = 0.6f;
 
+// Struct for the control panel
+struct control_s {
+	int fog_enabled;
+	int fog_color;
+};
+
+control_s control = {};
+
 void Mouse_Wheel_Func(int button, int state, int x, int y)
 {
 	if ((button == 3) || (button == 4))
@@ -222,9 +230,25 @@ int main(int argc, char *argv[])
 
 	// GLUI
 	GLUI_Master.set_glutIdleFunc(NULL);
-	GLUI *glui_subwin = GLUI_Master.create_glui_subwindow(mainWindowID, GLUI_SUBWINDOW_RIGHT);
-	glui_subwin->set_main_gfx_window(mainWindowID);
+	GLUI *glui = GLUI_Master.create_glui_subwindow(mainWindowID, GLUI_SUBWINDOW_RIGHT);
+	glui->set_main_gfx_window(mainWindowID);
 	GLUI_Master.auto_set_viewport();
+
+	// Menu items, migrate to separate file later
+	glui->add_separator();
+	glui->add_statictext("i-Navigation@CUHK");
+	glui->add_separator();
+
+	GLUI_Panel *render_control = new GLUI_Rollout(glui, "Render Control", true);
+
+	GLUI_Panel *fog_panel = glui->add_panel_to_panel(render_control, "Fog");
+	glui->add_checkbox_to_panel(render_control, "Fog On/Off", &control.fog_enabled, 1);
+	GLUI_RadioGroup *fog_colour = glui->add_radiogroup_to_panel(fog_panel, &control.fog_color, 0);
+	glui->add_radiobutton_to_group(fog_colour, "Ivory");
+	glui->add_radiobutton_to_group(fog_colour, "Ocean Blue");
+
+	GLUI_Panel *move_normal_map = glui->add_panel_to_panel(render_control, "Move/Normal/Map");
+	GLUI_Panel *viewpoint = glui->add_panel_to_panel(render_control, "Viewpoint");
 
 	/*Enter the GLUT event processing loop which never returns.*/
 	glutMainLoop();
