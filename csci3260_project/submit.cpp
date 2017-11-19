@@ -216,9 +216,15 @@ int main(int argc, char *argv[])
 	// draw
 	glutDisplayFunc(paintGL);
 
-	glutMouseFunc(Mouse_Wheel_Func);
+	GLUI_Master.set_glutMouseFunc(Mouse_Wheel_Func);
 
-	glutTimerFunc(700.0f / 60.0f, timerFunction, 1);
+	GLUI_Master.set_glutTimerFunc(700.0f / 60.0f, timerFunction, 1);
+
+	// GLUI
+	GLUI_Master.set_glutIdleFunc(NULL);
+	GLUI *glui_subwin = GLUI_Master.create_glui_subwindow(mainWindowID, GLUI_SUBWINDOW_RIGHT);
+	glui_subwin->set_main_gfx_window(mainWindowID);
+	GLUI_Master.auto_set_viewport();
 
 	/*Enter the GLUT event processing loop which never returns.*/
 	glutMainLoop();
