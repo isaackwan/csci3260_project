@@ -127,6 +127,10 @@
     <ClInclude Include="Loading_func.h" />
     <ClInclude Include="shader_install.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shader\Common.frag" />
+    <None Include="shader\Common.vs" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
