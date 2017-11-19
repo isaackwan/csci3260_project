@@ -206,14 +206,17 @@ void timerFunction(int id)
 	glutTimerFunc(700.0f / 60.0f, timerFunction, 1);
 }
 
+void myGlutReshape(int width, int height) {
+	GLUI_Master.auto_set_viewport();
+}
+
 int main(int argc, char *argv[])
 {
 	/*Initialization of GLUT library*/
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 	glutInitWindowPosition(100, 100);
-	int height = GetSystemMetrics(SM_CYSCREEN)*0.8;
-	glutInitWindowSize(height, height);
+	glutInitWindowSize(940, 800);
 
 	glutInitContextVersion(4, 3);
 	glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
@@ -230,9 +233,9 @@ int main(int argc, char *argv[])
 
 	// GLUI
 	GLUI_Master.set_glutIdleFunc(NULL);
+	GLUI_Master.set_glutReshapeFunc(&myGlutReshape);
 	GLUI *glui = GLUI_Master.create_glui_subwindow(mainWindowID, GLUI_SUBWINDOW_RIGHT);
 	glui->set_main_gfx_window(mainWindowID);
-	GLUI_Master.auto_set_viewport();
 
 	// Menu items, migrate to separate file later
 	glui->add_separator();
