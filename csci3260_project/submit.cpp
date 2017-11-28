@@ -158,9 +158,8 @@ void drawEarth(void)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, TextureEarth);
 	glUniform1i(TextureID, 0);
-	glActiveTexture(GL_TEXTURE1);
-
 	glDrawArrays(GL_TRIANGLES, 0, drawEarthSize);
+	glActiveTexture(GL_TEXTURE1);
 }
 
 
@@ -188,9 +187,8 @@ void drawAeroplane(void)
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, TextureAeroplane);
 	glUniform1i(TextureID, 1);
-	glActiveTexture(GL_TEXTURE2);
-
 	glDrawArrays(GL_TRIANGLES, 0, drawEarthSize);
+	glActiveTexture(GL_TEXTURE2);
 }
 
 void paintGL(void)
