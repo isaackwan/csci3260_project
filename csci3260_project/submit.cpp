@@ -54,6 +54,8 @@ float a_brightness = 1.0f;
 float d_brightness = 0.0f;
 float s_brightness = 0.6f;
 
+GLuint aeroplaneRotatePosition;
+
 // Struct for the control panel
 struct control_s {
 	int fog_enabled;
@@ -170,10 +172,11 @@ void drawAeroplane(void)
 
 	glUseProgram(programID);
 
-	glBindVertexArray(earthVao);
+	glBindVertexArray(aeroplaneVao);
 	glm::mat4 scale_M = glm::scale(glm::mat4(1.0f), glm::vec3(scale_fact));
+	glm::mat4 rot_M = glm::rotate(glm::mat4(1.0f), aeroplaneRotatePosition / 250.0f, glm::vec3(0, 1, 0));
 	glm::mat4 trans_M = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-	glm::mat4 Model = trans_M * scale_M;
+	glm::mat4 Model = trans_M * rot_M * scale_M;
 
 	GLint M_ID = glGetUniformLocation(programID, "MM");
 	glUniformMatrix4fv(M_ID, 1, GL_FALSE, &Model[0][0]);
@@ -245,6 +248,11 @@ void myGlutReshape(int width, int height) {
 	GLUI_Master.auto_set_viewport();
 }
 
+void idleFunction() {
+	aeroplaneRotatePosition += 1;
+	glutPostRedisplay();
+}
+
 int main(int argc, char *argv[])
 {
 	/*Initialization of GLUT library*/
@@ -267,7 +275,7 @@ int main(int argc, char *argv[])
 	GLUI_Master.set_glutTimerFunc(700.0f / 60.0f, timerFunction, 1);
 
 	// GLUI
-	GLUI_Master.set_glutIdleFunc(NULL);
+	GLUI_Master.set_glutIdleFunc(&idleFunction);
 	GLUI_Master.set_glutReshapeFunc(&myGlutReshape);
 	GLUI *glui = GLUI_Master.create_glui_subwindow(mainWindowID, GLUI_SUBWINDOW_RIGHT);
 	glui->set_main_gfx_window(mainWindowID);
