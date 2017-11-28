@@ -167,16 +167,16 @@ void drawEarth(void)
 
 void drawAeroplane(void)
 {
-	//earth
-	GLfloat scale_fact = 3.0f;
+	//return;
 
 	glUseProgram(programID);
 
 	glBindVertexArray(aeroplaneVao);
-	glm::mat4 scale_M = glm::scale(glm::mat4(1.0f), glm::vec3(scale_fact));
-	glm::mat4 rot_M = glm::rotate(glm::mat4(1.0f), aeroplaneRotatePosition / 250.0f, glm::vec3(0, 1, 0));
-	glm::mat4 trans_M = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-	glm::mat4 Model = trans_M * rot_M * scale_M;
+	glm::mat4 modelTransformation = glm::mat4();
+	modelTransformation = glm::scale(modelTransformation, glm::vec3(0.0138f));
+	modelTransformation = glm::rotate(modelTransformation, aeroplaneRotatePosition / 250.0f, glm::vec3(0, 1, 0));
+	modelTransformation = glm::translate(modelTransformation, glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::mat4 Model = modelTransformation;
 
 	GLint M_ID = glGetUniformLocation(programID, "MM");
 	glUniformMatrix4fv(M_ID, 1, GL_FALSE, &Model[0][0]);
@@ -190,7 +190,7 @@ void drawAeroplane(void)
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, TextureAeroplane);
 	glUniform1i(TextureID, 1);
-	glDrawArrays(GL_TRIANGLES, 0, drawEarthSize);
+	glDrawArrays(GL_TRIANGLES, 0, drawAeroplaneSize);
 	glActiveTexture(GL_TEXTURE2);
 }
 
