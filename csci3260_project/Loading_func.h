@@ -12,6 +12,7 @@
 // load OBJ model file data
 bool loadOBJ(const char * path, std::vector<glm::vec3> & out_vertices, std::vector<glm::vec2> & out_uvs, std::vector<glm::vec3> & out_normals);
 GLuint loadBMP2Texture(const char * imagepath);
+GLuint loadBMP_Data(const char * imagepath, unsigned char *& img_data, int & img_w, int & img_h);
 
 /*** END OF FILE ***/
 
