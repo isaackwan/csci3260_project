@@ -28,14 +28,16 @@ GLint programID;
 GLuint TextureEarth;
 GLuint TextureAeroplane;
 GLuint TextureSkybox;
+GLuint TextureMoon;
 
 extern GLuint earthVao;
 extern GLuint aeroplaneVao;
+extern GLuint moonVao;
 extern GLuint skyboxVao;
 
 extern int drawEarthSize;
 extern int drawAeroplaneSize;
-extern int drawSkyboxSize;
+extern int drawMoonSize;
 
 // view matrix
 glm::mat4 common_viewM;
@@ -95,6 +97,7 @@ void LoadAllTextures()
 {
 	TextureEarth = loadBMP2Texture("texture/earth.bmp");
 	TextureAeroplane = loadBMP2Texture("texture/helicopter.bmp");
+	TextureMoon = loadBMP2Texture("texture/grass.bmp");
 	TextureSkybox = loadBMP2Texture("texture/white.bmp");
 }
 
@@ -103,6 +106,7 @@ void sendDataToOpenGL()
 	//Load objects and bind to VAO & VBO
 	bindEarth("model_obj/planet.obj");
 	bindAeroplane("model_obj/Arc170.obj");
+	bindMoon("model_obj/planet.obj");
 	bindSkybox();
 	// load all textures
 	LoadAllTextures();
@@ -204,9 +208,45 @@ void drawAeroplane(void)
 	glActiveTexture(GL_TEXTURE2);
 }
 
-void drawSkybox(void)
+void drawMoon(void)
 {
 	//return;
+
+	glUseProgram(programID);
+
+	glBindVertexArray(moonVao);
+	//glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.0083f));
+	/*glm::mat4 rotate1 = glm::rotate(glm::mat4(), glm::radians(90.0f), glm::vec3(0, 1, 0));
+	glm::mat4 rotate3 = glm::rotate(glm::mat4(), glm::radians(90.0f), glm::vec3(0, 0, 1));
+	glm::mat4 translate1 = glm::translate(glm::mat4(), glm::vec3(13.6f, 0, 0));
+	glm::mat4 rotate2 = glm::rotate(glm::mat4(), aeroplaneRotatePosition / 250.0f, glm::vec3(0, 0, 1));
+	glm::mat4 translate2 = glm::translate(glm::mat4(), glm::vec3(0, 5.0f, 0));
+	glm::mat4 Model = translate2 * rotate2 * translate1 * rotate3 * rotate1;*/
+
+	glm::mat4 scale_M = glm::scale(glm::mat4(1.0f), glm::vec3(3.0f));
+	glm::mat4 rot_M = glm::rotate(glm::mat4(1.0f), glm::radians(earth_innRot_Degree), glm::vec3(0, 1, 0));
+	glm::mat4 trans_M = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	glm::mat4 Model = trans_M * rot_M * scale_M;
+
+	GLint M_ID = glGetUniformLocation(programID, "MM");
+	glUniformMatrix4fv(M_ID, 1, GL_FALSE, &Model[0][0]);
+	GLint V_ID = glGetUniformLocation(programID, "VM");
+	glUniformMatrix4fv(V_ID, 1, GL_FALSE, &common_viewM[0][0]);
+	GLint P_ID = glGetUniformLocation(programID, "PM");
+	glUniformMatrix4fv(P_ID, 1, GL_FALSE, &common_projection[0][0]);
+
+	// texture
+	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, TextureMoon);
+	glUniform1i(TextureID, 3);
+	glDrawArrays(GL_TRIANGLES, 0, drawMoonSize);
+	glActiveTexture(GL_TEXTURE4);
+}
+
+void drawSkybox(void)
+{
+	return;
 
 	glUseProgram(programID);
 
@@ -246,6 +286,7 @@ void paintGL(void)
 	// draw earth
 	drawEarth();
 	drawAeroplane();
+	drawMoon();
 	drawSkybox();
 
 	glutSwapBuffers();
