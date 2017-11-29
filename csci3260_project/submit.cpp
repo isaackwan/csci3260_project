@@ -27,6 +27,7 @@ GLint programID;
 
 GLuint TextureEarth;
 GLuint TextureAeroplane;
+GLuint TextureSkybox;
 
 extern GLuint earthVao;
 extern GLuint aeroplaneVao;
@@ -94,6 +95,7 @@ void LoadAllTextures()
 {
 	TextureEarth = loadBMP2Texture("texture/earth.bmp");
 	TextureAeroplane = loadBMP2Texture("texture/helicopter.bmp");
+	TextureSkybox = loadBMP2Texture("texture/white.bmp");
 }
 
 void sendDataToOpenGL()
@@ -209,13 +211,11 @@ void drawSkybox(void)
 	glUseProgram(programID);
 
 	glBindVertexArray(skyboxVao);
-	glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.0083f));
-	glm::mat4 rotate1 = glm::rotate(glm::mat4(), glm::radians(90.0f), glm::vec3(0, 1, 0));
-	glm::mat4 rotate3 = glm::rotate(glm::mat4(), glm::radians(90.0f), glm::vec3(0, 0, 1));
-	glm::mat4 translate1 = glm::translate(glm::mat4(), glm::vec3(13.6f, 0, 0));
-	glm::mat4 rotate2 = glm::rotate(glm::mat4(), aeroplaneRotatePosition / 250.0f, glm::vec3(0, 0, 1));
-	glm::mat4 translate2 = glm::translate(glm::mat4(), glm::vec3(0, 5.0f, 0));
-	glm::mat4 Model = glm::mat4();
+
+	glBindVertexArray(skyboxVao);
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
+
+	glm::mat4 Model = glm::scale(glm::mat4(), glm::vec3(4.0f));
 
 	GLint M_ID = glGetUniformLocation(programID, "MM");
 	glUniformMatrix4fv(M_ID, 1, GL_FALSE, &Model[0][0]);
@@ -229,7 +229,7 @@ void drawSkybox(void)
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, TextureAeroplane);
 	glUniform1i(TextureID, 1);
-	glDrawArrays(GL_TRIANGLES, 0, drawSkyboxSize);
+	glDrawElements(GL_TRIANGLES, 30, GL_UNSIGNED_INT, 0);
 	glActiveTexture(GL_TEXTURE2);
 }
 
