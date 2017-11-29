@@ -46,7 +46,6 @@ glm::mat4 common_projection;
 float earth_innRot_Degree = 0.0f;
 
 // ============================= //
-const float M_PI = 3.14159265;
 float radius = 30.0f;
 float initViewHorizontal = -90.0f;
 float initViewVertical = -90.0f;
