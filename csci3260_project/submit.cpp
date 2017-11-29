@@ -46,6 +46,8 @@ extern int drawMoonSize;
 glm::mat4 common_viewM;
 glm::mat4 common_projection;
 
+int viewpoint_switch;
+
 float earth_innRot_Degree = 0.0f;
 
 // ============================= //
@@ -308,7 +310,20 @@ void paintGL(void)
 
 	// ================================ //
 	// view matrix
-	common_viewM = glm::lookAt(glm::vec3(cameraX, cameraY, cameraZ), glm::vec3(7, -5, 0), glm::vec3(0, 1, 0));
+	switch (viewpoint_switch) {
+	case 1: // Right
+		common_viewM = glm::lookAt(glm::vec3(cameraZ, cameraY, cameraX), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+		break;
+	case 2: // Bottom
+		common_viewM = glm::lookAt(glm::vec3(cameraX, cameraZ, 1+cameraY), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+		break;
+	case 0:
+		common_viewM = glm::lookAt(glm::vec3(cameraX, cameraY, cameraZ), glm::vec3(7, -5, 0), glm::vec3(0, 1, 0));
+		break;
+	default:
+		std::cerr << "Unknown viewpoint_switch value: " << viewpoint_switch << ". Not changing common_viewM." << std::endl;
+	}
+	
 	// projection matrix
 	common_projection = glm::perspective(camera_fov, 1.0f, 0.1f, 200.0f);
 	
@@ -355,6 +370,29 @@ void timerFunction(int id)
 	glutTimerFunc(700.0f / 60.0f, timerFunction, 1);
 }
 
+void keyboardFunc(unsigned char key, int x, int y) {
+	/* This function is used for debugging only */
+	if (key == 'q') {
+		cameraX += 1.0f;
+	}
+	else if (key == 'a') {
+		cameraX -= 1.0f;
+	}
+	else if (key == 'w') {
+		cameraY += 1.0f;
+	}
+	else if (key == 's') {
+		cameraY -= 1.0f;
+	}
+	else if (key == 'e') {
+		cameraZ += 1.0f;
+	}
+	else if (key == 'd') {
+		cameraZ -= 1.0f;
+	}
+	std::cout << "cameraX: " << cameraX << ", cameraY: " << cameraY << ", cameraZ: " << cameraZ << std::endl;
+}
+
 void myGlutReshape(int width, int height) {
 	GLUI_Master.auto_set_viewport();
 }
@@ -379,6 +417,10 @@ void initializeGlui(GLUI* glui) {
 
 	GLUI_Panel *move_normal_map = glui->add_panel_to_panel(render_control, "Move/Normal/Map");
 	GLUI_Panel *viewpoint = glui->add_panel_to_panel(render_control, "Viewpoint");
+	GLUI_RadioGroup *viewpoint_group = glui->add_radiogroup_to_panel(viewpoint, &viewpoint_switch);
+	glui->add_radiobutton_to_group(viewpoint_group, "Default");
+	glui->add_radiobutton_to_group(viewpoint_group, "Right");
+	glui->add_radiobutton_to_group(viewpoint_group, "Bottom");
 }
 
 int main(int argc, char *argv[])
@@ -399,7 +441,7 @@ int main(int argc, char *argv[])
 	glutDisplayFunc(paintGL);
 
 	GLUI_Master.set_glutMouseFunc(Mouse_Wheel_Func);
-
+	GLUI_Master.set_glutKeyboardFunc(&keyboardFunc);
 	GLUI_Master.set_glutTimerFunc(700.0f / 60.0f, timerFunction, 1);
 
 	// GLUI
