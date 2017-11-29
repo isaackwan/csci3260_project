@@ -24,6 +24,9 @@ float camera_fov = 45.0;
 
 int  mainWindowID;
 GLint programID;
+GLUI* glui;
+
+GLUI_RadioGroup* viewpoint_group;
 
 GLuint TextureEarth;
 GLuint TextureMars;
@@ -371,24 +374,33 @@ void timerFunction(int id)
 }
 
 void keyboardFunc(unsigned char key, int x, int y) {
-	/* This function is used for debugging only */
+	/* This hotkeys are used for debugging only */
 	if (key == 'q') {
 		cameraX += 1.0f;
 	}
-	else if (key == 'a') {
+	else if (key == 'z') {
 		cameraX -= 1.0f;
 	}
 	else if (key == 'w') {
 		cameraY += 1.0f;
 	}
-	else if (key == 's') {
+	else if (key == 'x') {
 		cameraY -= 1.0f;
 	}
 	else if (key == 'e') {
 		cameraZ += 1.0f;
 	}
-	else if (key == 'd') {
+	else if (key == 'c') {
 		cameraZ -= 1.0f;
+	} /* Spec-required keyboard operations start here */
+	else if (key == 'a') {
+		viewpoint_group->set_int_val(0);
+	}
+	else if (key == 's') {
+		viewpoint_group->set_int_val(1);
+	}
+	else if (key == 'd') {
+		viewpoint_group->set_int_val(2);
 	}
 	std::cout << "cameraX: " << cameraX << ", cameraY: " << cameraY << ", cameraZ: " << cameraZ << std::endl;
 }
@@ -417,7 +429,7 @@ void initializeGlui(GLUI* glui) {
 
 	GLUI_Panel *move_normal_map = glui->add_panel_to_panel(render_control, "Move/Normal/Map");
 	GLUI_Panel *viewpoint = glui->add_panel_to_panel(render_control, "Viewpoint");
-	GLUI_RadioGroup *viewpoint_group = glui->add_radiogroup_to_panel(viewpoint, &viewpoint_switch);
+	viewpoint_group = glui->add_radiogroup_to_panel(viewpoint, &viewpoint_switch);
 	glui->add_radiobutton_to_group(viewpoint_group, "Default");
 	glui->add_radiobutton_to_group(viewpoint_group, "Right");
 	glui->add_radiobutton_to_group(viewpoint_group, "Bottom");
@@ -447,7 +459,7 @@ int main(int argc, char *argv[])
 	// GLUI
 	GLUI_Master.set_glutIdleFunc(&idleFunction);
 	GLUI_Master.set_glutReshapeFunc(&myGlutReshape);
-	GLUI *glui = GLUI_Master.create_glui_subwindow(mainWindowID, GLUI_SUBWINDOW_RIGHT);
+	glui = GLUI_Master.create_glui_subwindow(mainWindowID, GLUI_SUBWINDOW_RIGHT);
 	glui->set_main_gfx_window(mainWindowID);
 	initializeGlui(glui);
 
