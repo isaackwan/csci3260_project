@@ -11,7 +11,7 @@
 
 void bindEarth(const char * path);
 void bindAeroplane(const char * path);
-
+void bindSkybox(const char * path);
 
 /*** END OF FILE ***/
 

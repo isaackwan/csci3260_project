@@ -30,8 +30,12 @@ GLuint TextureAeroplane;
 
 extern GLuint earthVao;
 extern GLuint aeroplaneVao;
+extern GLuint skyboxVao;
+
 extern int drawEarthSize;
 extern int drawAeroplaneSize;
+extern int drawSkyboxSize;
+
 // view matrix
 glm::mat4 common_viewM;
 glm::mat4 common_projection;
@@ -97,6 +101,7 @@ void sendDataToOpenGL()
 	//Load objects and bind to VAO & VBO
 	bindEarth("model_obj/planet.obj");
 	bindAeroplane("model_obj/Arc170.obj");
+	bindSkybox();
 	// load all textures
 	LoadAllTextures();
 }
@@ -136,7 +141,7 @@ void set_lighting()
 
 void drawEarth(void)
 {
-	//return;
+	return;
 	//earth
 	GLfloat scale_fact = 3.0f;
 
@@ -164,10 +169,11 @@ void drawEarth(void)
 	glActiveTexture(GL_TEXTURE1);
 }
 
+extern GLuint earthVao;
 
 void drawAeroplane(void)
 {
-	//return;
+	return;
 
 	glUseProgram(programID);
 
@@ -196,6 +202,37 @@ void drawAeroplane(void)
 	glActiveTexture(GL_TEXTURE2);
 }
 
+void drawSkybox(void)
+{
+	//return;
+
+	glUseProgram(programID);
+
+	glBindVertexArray(skyboxVao);
+	glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.0083f));
+	glm::mat4 rotate1 = glm::rotate(glm::mat4(), glm::radians(90.0f), glm::vec3(0, 1, 0));
+	glm::mat4 rotate3 = glm::rotate(glm::mat4(), glm::radians(90.0f), glm::vec3(0, 0, 1));
+	glm::mat4 translate1 = glm::translate(glm::mat4(), glm::vec3(13.6f, 0, 0));
+	glm::mat4 rotate2 = glm::rotate(glm::mat4(), aeroplaneRotatePosition / 250.0f, glm::vec3(0, 0, 1));
+	glm::mat4 translate2 = glm::translate(glm::mat4(), glm::vec3(0, 5.0f, 0));
+	glm::mat4 Model = glm::mat4();
+
+	GLint M_ID = glGetUniformLocation(programID, "MM");
+	glUniformMatrix4fv(M_ID, 1, GL_FALSE, &Model[0][0]);
+	GLint V_ID = glGetUniformLocation(programID, "VM");
+	glUniformMatrix4fv(V_ID, 1, GL_FALSE, &common_viewM[0][0]);
+	GLint P_ID = glGetUniformLocation(programID, "PM");
+	glUniformMatrix4fv(P_ID, 1, GL_FALSE, &common_projection[0][0]);
+
+	// texture
+	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, TextureAeroplane);
+	glUniform1i(TextureID, 1);
+	glDrawArrays(GL_TRIANGLES, 0, drawSkyboxSize);
+	glActiveTexture(GL_TEXTURE2);
+}
+
 void paintGL(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
@@ -212,6 +249,7 @@ void paintGL(void)
 	// draw earth
 	drawEarth();
 	drawAeroplane();
+	drawSkybox();
 
 	glutSwapBuffers();
 	glutPostRedisplay();
