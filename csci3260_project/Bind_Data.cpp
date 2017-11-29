@@ -1,9 +1,7 @@
 #include "Bind_Data.h"
 #include "Loading_func.h"
 
-int drawEarthSize = 0;
-int drawAeroplaneSize = 0;
-int drawMoonSize = 0;
+int drawEarthSize, drawAeroplaneSize, drawMoonSize;
 
 GLuint earthVao, aeroplaneVao, moonVao, skyboxVao;
 
