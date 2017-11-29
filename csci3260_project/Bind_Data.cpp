@@ -50,14 +50,13 @@ void bindEarth(const char * path)
 
 void bindAeroplane(const char * path)
 {
-	//Earth data
 	std::vector<glm::vec3> vao5_v;
 	std::vector<glm::vec2> vao5_uvs;
 	std::vector<glm::vec3> vao5_n;
 
 	loadOBJ(path, vao5_v, vao5_uvs, vao5_n);
 
-	//sending earth data
+	//sending aeroplane data
 	glGenVertexArrays(1, &aeroplaneVao);
 	glBindVertexArray(aeroplaneVao);
 	GLuint vbo5ID;
