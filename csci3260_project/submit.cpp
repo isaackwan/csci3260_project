@@ -212,7 +212,7 @@ void drawSkybox(void)
 
 	glBindVertexArray(skyboxVao);
 
-	glm::mat4 Model = glm::scale(glm::mat4(), glm::vec3(4.0f));
+	glm::mat4 Model = glm::translate(glm::mat4(), glm::vec3(10.0f, 0.0f, 0.0f)) * glm::scale(glm::mat4(), glm::vec3(4.0f));
 
 	GLint M_ID = glGetUniformLocation(programID, "MM");
 	glUniformMatrix4fv(M_ID, 1, GL_FALSE, &Model[0][0]);
