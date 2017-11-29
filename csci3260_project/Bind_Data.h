@@ -10,6 +10,7 @@
 #include <vector>
 
 void bindEarth(const char * path);
+void bindMars(const char * path);
 void bindAeroplane(const char * path);
 void bindMoon(const char * path);
 void bindSkybox();
