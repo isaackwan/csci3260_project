@@ -212,9 +212,6 @@ void drawSkybox(void)
 
 	glBindVertexArray(skyboxVao);
 
-	glBindVertexArray(skyboxVao);
-	//glBindBuffer(GL_ARRAY_BUFFER, vbo[2]);
-
 	glm::mat4 Model = glm::scale(glm::mat4(), glm::vec3(4.0f));
 
 	GLint M_ID = glGetUniformLocation(programID, "MM");
@@ -226,11 +223,11 @@ void drawSkybox(void)
 
 	// texture
 	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, TextureAeroplane);
-	glUniform1i(TextureID, 1);
-	glDrawElements(GL_TRIANGLES, 30, GL_UNSIGNED_INT, 0);
 	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, TextureSkybox);
+	glUniform1i(TextureID, 2);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE3);
 }
 
 void paintGL(void)

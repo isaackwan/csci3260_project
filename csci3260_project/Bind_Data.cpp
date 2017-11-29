@@ -122,6 +122,8 @@ void bindSkybox()
 		3, 4, 5,
 		3, 7, 1,
 		3, 7, 5,
+		0, 4, 6,
+		0, 6, 2,
 	};
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyboxVbo[1]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(box_elements), box_elements, GL_STATIC_DRAW);
@@ -129,4 +131,10 @@ void bindSkybox()
 	//vertex position
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+
+	// uv coordinates for texture mapping
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+
+	std::cout << skyboxVbo[0] << ", " << skyboxVbo[1] << std::endl;
 }
