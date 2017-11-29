@@ -332,6 +332,23 @@ void idleFunction() {
 	glutPostRedisplay();
 }
 
+void initializeGlui(GLUI* glui) {
+	glui->add_separator();
+	glui->add_statictext("i-Navigation@CUHK");
+	glui->add_separator();
+
+	GLUI_Panel *render_control = new GLUI_Rollout(glui, "Render Control", true);
+
+	GLUI_Panel *fog_panel = glui->add_panel_to_panel(render_control, "Fog");
+	glui->add_checkbox_to_panel(render_control, "Fog On/Off", &control.fog_enabled, 1);
+	GLUI_RadioGroup *fog_colour = glui->add_radiogroup_to_panel(fog_panel, &control.fog_color, 0);
+	glui->add_radiobutton_to_group(fog_colour, "Ivory");
+	glui->add_radiobutton_to_group(fog_colour, "Ocean Blue");
+
+	GLUI_Panel *move_normal_map = glui->add_panel_to_panel(render_control, "Move/Normal/Map");
+	GLUI_Panel *viewpoint = glui->add_panel_to_panel(render_control, "Viewpoint");
+}
+
 int main(int argc, char *argv[])
 {
 	/*Initialization of GLUT library*/
@@ -358,22 +375,7 @@ int main(int argc, char *argv[])
 	GLUI_Master.set_glutReshapeFunc(&myGlutReshape);
 	GLUI *glui = GLUI_Master.create_glui_subwindow(mainWindowID, GLUI_SUBWINDOW_RIGHT);
 	glui->set_main_gfx_window(mainWindowID);
-
-	// Menu items, migrate to separate file later
-	glui->add_separator();
-	glui->add_statictext("i-Navigation@CUHK");
-	glui->add_separator();
-
-	GLUI_Panel *render_control = new GLUI_Rollout(glui, "Render Control", true);
-
-	GLUI_Panel *fog_panel = glui->add_panel_to_panel(render_control, "Fog");
-	glui->add_checkbox_to_panel(render_control, "Fog On/Off", &control.fog_enabled, 1);
-	GLUI_RadioGroup *fog_colour = glui->add_radiogroup_to_panel(fog_panel, &control.fog_color, 0);
-	glui->add_radiobutton_to_group(fog_colour, "Ivory");
-	glui->add_radiobutton_to_group(fog_colour, "Ocean Blue");
-
-	GLUI_Panel *move_normal_map = glui->add_panel_to_panel(render_control, "Move/Normal/Map");
-	GLUI_Panel *viewpoint = glui->add_panel_to_panel(render_control, "Viewpoint");
+	initializeGlui(glui);
 
 	/*Enter the GLUT event processing loop which never returns.*/
 	glutMainLoop();
