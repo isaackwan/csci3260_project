@@ -136,7 +136,7 @@ void set_lighting()
 
 void drawEarth(void)
 {
-	return;
+	//return;
 	//earth
 	GLfloat scale_fact = 3.0f;
 
@@ -172,11 +172,13 @@ void drawAeroplane(void)
 	glUseProgram(programID);
 
 	glBindVertexArray(aeroplaneVao);
-	glm::mat4 modelTransformation = glm::mat4();
-	modelTransformation = glm::scale(modelTransformation, glm::vec3(0.0138f));
-	modelTransformation = glm::rotate(modelTransformation, aeroplaneRotatePosition / 250.0f, glm::vec3(0, 1, 0));
-	modelTransformation = glm::translate(modelTransformation, glm::vec3(0.0f, 0.0f, 0.0f));
-	glm::mat4 Model = modelTransformation;
+	glm::mat4 scale = glm::scale(glm::mat4(), glm::vec3(0.0083f));
+	glm::mat4 rotate1 = glm::rotate(glm::mat4(), glm::radians(90.0f), glm::vec3(0, 1, 0));
+	glm::mat4 rotate3 = glm::rotate(glm::mat4(), glm::radians(90.0f), glm::vec3(0, 0, 1));
+	glm::mat4 translate1 = glm::translate(glm::mat4(), glm::vec3(13.6f, 0, 0));
+	glm::mat4 rotate2 = glm::rotate(glm::mat4(), aeroplaneRotatePosition / 250.0f, glm::vec3(0, 0, 1));
+	glm::mat4 translate2 = glm::translate(glm::mat4(), glm::vec3(0, 5.0f, 0));
+	glm::mat4 Model = translate2 * rotate2 * translate1 * rotate3 * rotate1 * scale;
 
 	GLint M_ID = glGetUniformLocation(programID, "MM");
 	glUniformMatrix4fv(M_ID, 1, GL_FALSE, &Model[0][0]);
