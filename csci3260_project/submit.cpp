@@ -49,7 +49,7 @@ glm::mat4 common_projection;
 float earth_innRot_Degree = 0.0f;
 
 // ============================= //
-float radius = 30.0f;
+float radius = 42.0f;
 float initViewHorizontal = -90.0f;
 float initViewVertical = -90.0f;
 
@@ -256,7 +256,7 @@ void drawMoon(void)
 	glm::mat4 scale1 = glm::mat4(0.7f);
 	glm::mat4 rotate1 = glm::rotate(glm::mat4(1.0f), glm::radians(earth_innRot_Degree), glm::vec3(0, 1, 0));
 	glm::mat4 translate1 = glm::translate(glm::mat4(1.0f), glm::vec3(12.0f, 0.0f, 0.0f));
-	glm::mat4 rotate2 = glm::rotate(glm::mat4(), aeroplaneRotatePosition / 250.0f, glm::vec3(0, 0, 1));
+	glm::mat4 rotate2 = glm::rotate(glm::mat4(), (aeroplaneRotatePosition + 8) / -250.0f, glm::vec3(0, 0, 1));
 	glm::mat4 translate2 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 3.0f, 0.0f));
 	glm::mat4 Model = translate2 * rotate2 * translate1 * rotate1 * scale1;
 
@@ -308,7 +308,7 @@ void paintGL(void)
 
 	// ================================ //
 	// view matrix
-	common_viewM = glm::lookAt(glm::vec3(cameraX, cameraY, cameraZ), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	common_viewM = glm::lookAt(glm::vec3(cameraX, cameraY, cameraZ), glm::vec3(7, -5, 0), glm::vec3(0, 1, 0));
 	// projection matrix
 	common_projection = glm::perspective(camera_fov, 1.0f, 0.1f, 200.0f);
 	
