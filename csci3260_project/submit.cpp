@@ -147,7 +147,7 @@ void set_lighting()
 
 void drawEarth(void)
 {
-	return;
+	//return;
 	//earth
 	GLfloat scale_fact = 3.0f;
 
@@ -223,10 +223,12 @@ void drawMoon(void)
 	glm::mat4 translate2 = glm::translate(glm::mat4(), glm::vec3(0, 5.0f, 0));
 	glm::mat4 Model = translate2 * rotate2 * translate1 * rotate3 * rotate1;*/
 
-	glm::mat4 scale_M = glm::scale(glm::mat4(1.0f), glm::vec3(3.0f));
-	glm::mat4 rot_M = glm::rotate(glm::mat4(1.0f), glm::radians(earth_innRot_Degree), glm::vec3(0, 1, 0));
-	glm::mat4 trans_M = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-	glm::mat4 Model = trans_M * rot_M * scale_M;
+	glm::mat4 scale1 = glm::mat4(0.7f);
+	glm::mat4 rotate1 = glm::rotate(glm::mat4(1.0f), glm::radians(earth_innRot_Degree), glm::vec3(0, 1, 0));
+	glm::mat4 translate1 = glm::translate(glm::mat4(1.0f), glm::vec3(12.0f, 0.0f, 0.0f));
+	glm::mat4 rotate2 = glm::rotate(glm::mat4(), aeroplaneRotatePosition / 250.0f, glm::vec3(0, 0, 1));
+	glm::mat4 translate2 = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 3.0f, 0.0f));
+	glm::mat4 Model = translate2 * rotate2 * translate1 * rotate1 * scale1;
 
 	GLint M_ID = glGetUniformLocation(programID, "MM");
 	glUniformMatrix4fv(M_ID, 1, GL_FALSE, &Model[0][0]);
