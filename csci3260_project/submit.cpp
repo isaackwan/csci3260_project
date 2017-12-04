@@ -65,8 +65,8 @@ float cameraZ = radius;
 float viewRotateDegree[3] = { 0.0f, 0.0f, 0.0f };
 
 float a_brightness = 1.0f;
-float d_brightness = 0.0f;
-float s_brightness = 0.6f;
+float d_brightness = 0.5f;
+float s_brightness = 0.7f;
 
 GLuint aeroplaneRotatePosition;
 
@@ -99,6 +99,23 @@ void Mouse_Wheel_Func(int button, int state, int x, int y)
 		}
 	}
 }
+
+/*
+GLboolean movecamera = false;
+void PassiveMouse(int x, int y)
+{
+	if (movecamera) {
+		float x_change = float(x) / float(100);
+		float y_change = float(y) / float(100);
+		cameraX = cameraX ;
+		cameraY = cameraY + y_change;
+		cameraZ = cameraZ + x_change;
+		//x_ini, y_ini - y_change, z_ini - x_change
+		//vec3 eyePosition(cameraX, cameraY, cameraZ);
+	}
+	glutPostRedisplay();
+
+}*/
 
 void LoadAllTextures()
 {
@@ -150,7 +167,7 @@ void set_lighting()
 
 	// light color
 	GLint lightColorUniformLocation = glGetUniformLocation(programID, "lightColor");
-	glm::vec4 lightColor(1.0, 1.0, 1.0, 1.0);
+	glm::vec4 lightColor(0.0, 0.7, 1.0, 0.0);
 	glUniform4fv(lightColorUniformLocation, 1, &lightColor[0]);
 }
 
@@ -403,6 +420,12 @@ void keyboardFunc(unsigned char key, int x, int y) {
 		viewpoint_group->set_int_val(2);
 	}
 	std::cout << "cameraX: " << cameraX << ", cameraY: " << cameraY << ", cameraZ: " << cameraZ << std::endl;
+
+	/*//enable move camera by mouse by space bar
+	if (key == 32)
+	{
+		movecamera = !movecamera;
+	}*/
 }
 
 void myGlutReshape(int width, int height) {
@@ -455,6 +478,7 @@ int main(int argc, char *argv[])
 	GLUI_Master.set_glutMouseFunc(Mouse_Wheel_Func);
 	GLUI_Master.set_glutKeyboardFunc(&keyboardFunc);
 	GLUI_Master.set_glutTimerFunc(700.0f / 60.0f, timerFunction, 1);
+	//glutPassiveMotionFunc(PassiveMouse);
 
 	// GLUI
 	GLUI_Master.set_glutIdleFunc(&idleFunction);
