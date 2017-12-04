@@ -2,7 +2,7 @@
 
 in vec2 UV;
 
-out vec4 daColor;
+out vec3 daColor;
 
 uniform sampler2D myTextureSampler;
 
@@ -55,7 +55,9 @@ void main()
 	//			material_ambient_color							+	material_diffuse_color
 	//daColor = ambientLight * texture(myTextureSampler, UV).rgb  + texture(myTextureSampler, UV).rgb* brightness_d * clamp(diffuseLight, 0, 1) *  + specularLight * brightness_s  ;
 
-	daColor = Material_Clr + MaterialAmbientColor  + coefficient_d * clamp(diffuseLight, 0, 1) +  coefficient_s * specularLight    ;
+	daColor =	MaterialAmbientColor  + 
+				MaterialDiffuseColor * lightColor * coefficient_d * clamp(diffuseLight, 0, 1) +  
+				MaterialSpecularColor * lightColor * coefficient_s * specularLight    ;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 
