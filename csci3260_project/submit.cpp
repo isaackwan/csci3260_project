@@ -421,7 +421,7 @@ void keyboardFunc(unsigned char key, int x, int y) {
 	}
 	else if (key == 'c') {
 		cameraZ -= 1.0f;
-	} /* Spec-required keyboard operations start here */
+	} /* Spec-required keyboard operations for viewpoint switching start here */
 	else if (key == 'a') {
 		viewpoint_group->set_int_val(0);
 	}
