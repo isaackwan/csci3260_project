@@ -8,11 +8,14 @@ uniform sampler2D myTextureSampler;
 
 
 // for fog effect
-//const vec3 fogColor = vec3(0.5, 0.5, 0.5);
-const float FogDensity = 0.05f;
 in vec4 viewSpace;
 uniform bool fog_on;
 uniform vec3 fogColor;
+
+float FogDensity = 0.05f;
+float fogFactor = 1.0;	//fogFactor = visibility
+uniform float coe_density;
+uniform float coe_visibility;
 
 
 
@@ -71,9 +74,13 @@ void main()
 		//float dist =  length(viewSpace);
 		float dist = abs(viewSpace.z);
 
-		float fogFactor = 1.0;	//fogFactor = visibility
-		fogFactor = 1.0 /exp(dist * FogDensity);
+
+		FogDensity = FogDensity + coe_density ;
+
+		fogFactor = 1.0 /exp(dist * FogDensity);		//fogFactor = visibility
 		fogFactor = clamp(fogFactor, 0.0, 1.0 );
+
+		fogFactor = fogFactor + coe_visibility ;
  
 		// mix function fogColor?(1?fogFactor) + lightColor?fogFactor
 		finalColor = mix(fogColor, daColor, fogFactor);

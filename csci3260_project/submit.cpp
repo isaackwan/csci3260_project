@@ -78,6 +78,8 @@ struct control_s {
 
 control_s control = {};
 
+float coe_density = 0.0;
+float coe_visibility = 0.0;
 void Mouse_Wheel_Func(int button, int state, int x, int y)
 {
 	if ((button == 3) || (button == 4))
@@ -89,6 +91,10 @@ void Mouse_Wheel_Func(int button, int state, int x, int y)
 			cameraX = radius* cos(glm::radians(initViewHorizontal + viewRotateDegree[1]))*sin(glm::radians(initViewVertical + viewRotateDegree[0]));
 			cameraY = radius* cos(glm::radians(initViewVertical + viewRotateDegree[0]));
 			cameraZ = radius* sin(glm::radians(initViewHorizontal + viewRotateDegree[1]))*sin(glm::radians(initViewVertical + viewRotateDegree[0]));
+
+			coe_density		-=	0.05;
+			coe_visibility	-=	1.0;
+
 		}
 		else
 		{
@@ -96,8 +102,16 @@ void Mouse_Wheel_Func(int button, int state, int x, int y)
 			cameraX = radius* cos(glm::radians(initViewHorizontal + viewRotateDegree[1]))*sin(glm::radians(initViewVertical + viewRotateDegree[0]));
 			cameraY = radius* cos(glm::radians(initViewVertical + viewRotateDegree[0]));
 			cameraZ = radius* sin(glm::radians(initViewHorizontal + viewRotateDegree[1]))*sin(glm::radians(initViewVertical + viewRotateDegree[0]));
+
+			coe_density		+=	0.05;
+			coe_visibility	+=	1.0;
 		}
 	}
+	GLint coe_densityUniformLocation = glGetUniformLocation(programID, "coe_density");
+		glUniform1i(coe_densityUniformLocation, coe_density);
+	GLint coe_visibilityUniformLocation = glGetUniformLocation(programID, "coe_visibility");
+		glUniform1i(coe_visibilityUniformLocation, coe_density);
+
 }
 
 
