@@ -405,23 +405,23 @@ void timerFunction(int id)
 void keyboardFunc(unsigned char key, int x, int y) {
 	/* This hotkeys are used for debugging only */
 	if (key == 'q') {
-		cameraX += 1.0f;
-	}
-	else if (key == 'z') {
-		cameraX -= 1.0f;
+		a_brightness += 0.6f;
 	}
 	else if (key == 'w') {
-		cameraY += 1.0f;
-	}
-	else if (key == 'x') {
-		cameraY -= 1.0f;
+		a_brightness -= 0.6f;
 	}
 	else if (key == 'e') {
-		cameraZ += 1.0f;
+		d_brightness += 0.6f;
 	}
-	else if (key == 'c') {
-		cameraZ -= 1.0f;
-	} /* Spec-required keyboard operations for viewpoint switching start here */
+	else if (key == 'r') {
+		d_brightness -= 0.6f;
+	}
+	else if (key == 't') {
+		s_brightness += 0.6f;
+	}
+	else if (key == 'y') {
+		s_brightness -= 0.6f;
+	} /* Spec-required keyboard operations for viewpoint start here */
 	else if (key == 'a') {
 		viewpoint_group->set_int_val(0);
 	}
