@@ -353,6 +353,28 @@ void paintGL(void)
 		glUniform1i(fog_onUniformLocation, GL_TRUE);
 		break;
 	}
+
+	//fog colour
+	int temp = 1;
+	GLint fogColorUniformLocation = glGetUniformLocation(programID, "fogColor");
+	glm::vec3 fogColor; 
+	switch (control.fog_color) {
+
+	case 0: //Ivory			1.0	1.0	0.94
+		if (temp) {
+			fogColor = glm::vec3(1.0, 1.7, 0.94);
+			temp = 0;
+		}
+
+	case 1: // Ocean Blue    0.11 0.42 0.63
+		if (temp) {
+			fogColor = glm::vec3(0.0, 0.7, 1.0);
+			temp = 0;
+		}
+	
+	glUniform3fv(fogColorUniformLocation, 1, &fogColor[0]);
+	temp = 1;
+	}
 	
 
 	
