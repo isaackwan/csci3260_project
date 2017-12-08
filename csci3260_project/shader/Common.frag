@@ -8,9 +8,12 @@ uniform sampler2D myTextureSampler;
 
 
 // for fog effect
-const vec3 fogColor = vec3(0.5, 0.5,0.5);
+//const vec3 fogColor = vec3(0.5, 0.5, 0.5);
 const float FogDensity = 0.05f;
 in vec4 viewSpace;
+uniform bool fog_on;
+uniform vec3 fogColor;
+
 
 
 //for lighting
@@ -25,7 +28,6 @@ uniform vec3 lightPositionWorld;
 uniform vec4 lightColor;
 
 
-
 void main()
 {
 	vec3 Material_Clr = texture( myTextureSampler, UV).rgb;
@@ -38,7 +40,8 @@ void main()
 	//material color
 	vec3 MaterialDiffuseColor = texture( myTextureSampler, UV ).rgb;
 	vec3 MaterialAmbientColor = ambientLight * MaterialDiffuseColor;
-	vec3 MaterialSpecularColor = vec3(0.5,0.5,0.5);
+	vec3 MaterialSpecularColor = vec3(0.5,0.5,0.5);
+
 	//diffuse
 	vec3 lightVectorWorld = normalize(lightPositionWorld * vertexPositionWorld);
 	float brightness = dot(lightVectorWorld, normalize(normalWorld)) ;
@@ -61,19 +64,23 @@ void main()
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 
+	if(fog_on){
 
-	// for fog effect
-	/*vec3 finalColor = vec3(0.0, 0.0, 0.0);
-	float dist =  length(viewSpace);
+		// for fog effect
+		vec3 finalColor = vec3(0.0, 0.0, 0.0);
+		//float dist =  length(viewSpace);
+		float dist = abs(viewSpace.z);
 
-	float fogFactor = 0;	//visibility
-	fogFactor = 1.0 /exp(dist * FogDensity);
-    fogFactor = clamp(fogFactor, 0.0, 1.0 );
+		float fogFactor = 1.0;	//fogFactor = visibility
+		fogFactor = 1.0 /exp(dist * FogDensity);
+		fogFactor = clamp(fogFactor, 0.0, 1.0 );
  
-    // mix function fogColor?(1?fogFactor) + lightColor?fogFactor
-    finalColor = mix(fogColor, daColor, fogFactor);
-	daColor = vec4(finalColor, 1.0);*/
+		// mix function fogColor?(1?fogFactor) + lightColor?fogFactor
+		finalColor = mix(fogColor, daColor, fogFactor);
+		//daColor = vec4(finalColor, 1.0);
 
+			daColor = finalColor;
+	}
 
 
 }

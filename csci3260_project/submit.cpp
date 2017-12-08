@@ -318,6 +318,7 @@ void drawSkybox(void)
 	glActiveTexture(GL_TEXTURE3);
 }
 
+float fog_on = 0;
 void paintGL(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
@@ -340,6 +341,20 @@ void paintGL(void)
 	default:
 		std::cerr << "Unknown viewpoint_switch value: " << viewpoint_switch << ". Not changing common_viewM." << std::endl;
 	}
+
+	//foggy effect
+	GLint fog_onUniformLocation = glGetUniformLocation(programID, "fog_on");
+	switch (control.fog_enabled) {
+	case 0: // off
+		glUniform1i(fog_onUniformLocation, GL_FALSE);
+		break;
+
+	case 1: // on
+		glUniform1i(fog_onUniformLocation, GL_TRUE);
+		break;
+	}
+	
+
 	
 	// projection matrix
 	common_projection = glm::perspective(camera_fov, 1.0f, 0.1f, 200.0f);
@@ -442,7 +457,7 @@ void initializeGlui(GLUI* glui) {
 	GLUI_Panel *render_control = new GLUI_Rollout(glui, "Render Control", true);
 
 	GLUI_Panel *fog_panel = glui->add_panel_to_panel(render_control, "Fog");
-	glui->add_checkbox_to_panel(render_control, "Fog On/Off", &control.fog_enabled, 1);
+	glui->add_checkbox_to_panel(render_control, "Fog On/Off", &control.fog_enabled);
 	GLUI_RadioGroup *fog_colour = glui->add_radiogroup_to_panel(fog_panel, &control.fog_color, 0);
 	glui->add_radiobutton_to_group(fog_colour, "Ivory");
 	glui->add_radiobutton_to_group(fog_colour, "Ocean Blue");
