@@ -101,18 +101,12 @@ void Mouse_Wheel_Func(int button, int state, int x, int y)
 }
 
 
-GLboolean movecamera = false;
+GLint mouseState_x = 0;
+GLint mouseState_y = 0;
 void PassiveMouse(int x, int y)
 {
-	if (movecamera) {
-		float x_change = float(x) / float(100);
-		float y_change = float(y) / float(100);
-		cameraX = cameraX ;
-		cameraY = cameraY + y_change;
-		cameraZ = cameraZ + x_change;
-		//x_ini, y_ini - y_change, z_ini - x_change
-		//vec3 eyePosition(cameraX, cameraY, cameraZ);
-	}
+	mouseState_x = x - 450;
+	mouseState_y = y - 450;
 	glutPostRedisplay();
 
 }
@@ -340,6 +334,9 @@ void paintGL(void)
 	case 0:
 		common_viewM = glm::lookAt(glm::vec3(cameraX, cameraY, cameraZ), glm::vec3(7, -5, 0), glm::vec3(0, 1, 0));
 		break;
+	case 3:
+		common_viewM = glm::lookAt(glm::vec3(cameraX + float(mouseState_x) / 20, cameraY - float(mouseState_y) / 20, cameraZ), glm::vec3(7, -5, 0), glm::vec3(0, 1, 0));
+		break;
 	default:
 		std::cerr << "Unknown viewpoint_switch value: " << viewpoint_switch << ". Not changing common_viewM." << std::endl;
 	}
@@ -424,8 +421,7 @@ void keyboardFunc(unsigned char key, int x, int y) {
 	//enable move camera by mouse by space bar
 	if (key == 32)
 	{
-		movecamera = !movecamera;
-		std::cout << "new value of movecamera: " << (movecamera ? 1 : 0) << std::endl;
+		viewpoint_switch = 3;
 	}
 }
 
@@ -457,6 +453,7 @@ void initializeGlui(GLUI* glui) {
 	glui->add_radiobutton_to_group(viewpoint_group, "Default");
 	glui->add_radiobutton_to_group(viewpoint_group, "Right");
 	glui->add_radiobutton_to_group(viewpoint_group, "Bottom");
+	glui->add_radiobutton_to_group(viewpoint_group, "Mouse Mode");
 }
 
 int main(int argc, char *argv[])
