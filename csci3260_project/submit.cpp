@@ -100,7 +100,7 @@ void Mouse_Wheel_Func(int button, int state, int x, int y)
 	}
 }
 
-/*
+
 GLboolean movecamera = false;
 void PassiveMouse(int x, int y)
 {
@@ -115,7 +115,7 @@ void PassiveMouse(int x, int y)
 	}
 	glutPostRedisplay();
 
-}*/
+}
 
 void LoadAllTextures()
 {
@@ -421,11 +421,12 @@ void keyboardFunc(unsigned char key, int x, int y) {
 	}
 	std::cout << "cameraX: " << cameraX << ", cameraY: " << cameraY << ", cameraZ: " << cameraZ << std::endl;
 
-	/*//enable move camera by mouse by space bar
+	//enable move camera by mouse by space bar
 	if (key == 32)
 	{
 		movecamera = !movecamera;
-	}*/
+		std::cout << "new value of movecamera: " << (movecamera ? 1 : 0) << std::endl;
+	}
 }
 
 void myGlutReshape(int width, int height) {
@@ -478,7 +479,7 @@ int main(int argc, char *argv[])
 	GLUI_Master.set_glutMouseFunc(Mouse_Wheel_Func);
 	GLUI_Master.set_glutKeyboardFunc(&keyboardFunc);
 	GLUI_Master.set_glutTimerFunc(700.0f / 60.0f, timerFunction, 1);
-	//glutPassiveMotionFunc(PassiveMouse);
+	GLUI_Master.set_glutPassiveMotionFunc(PassiveMouse);
 
 	// GLUI
 	GLUI_Master.set_glutIdleFunc(&idleFunction);

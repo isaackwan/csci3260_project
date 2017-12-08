@@ -333,6 +333,11 @@ void glui_passive_motion_func(int x, int y)
 {
   GLUI *glui;
 
+  int current_window = glutGetWindow();
+  if (GLUI_Glut_Window* glut_window = GLUI_Master.find_glut_window(current_window)) {
+	  glut_window->glut_passive_motion_CB(x, y);
+  }
+
   glui = GLUI_Master.find_glui_by_window_id( glutGetWindow() );
 
   if ( glui ) {
@@ -1588,6 +1593,14 @@ void GLUI_Master_Object::set_glutMouseFunc(void (*f)(int button, int state,
 {
   glutMouseFunc( glui_mouse_func );
   add_cb_to_glut_window( glutGetWindow(), GLUI_GLUT_MOUSE, (void*) f);
+}
+
+/*********************** GLUI_Master_Object::set_glutPassiveMotionFunc() -- Isaac 20171208 **********/
+
+void GLUI_Master_Object::set_glutPassiveMotionFunc(void(*f)(int x, int y))
+{
+	glutPassiveMotionFunc(glui_passive_motion_func);
+	add_cb_to_glut_window(glutGetWindow(), GLUI_GLUT_PASSIVE_MOTION, (void*)f);
 }
 
 

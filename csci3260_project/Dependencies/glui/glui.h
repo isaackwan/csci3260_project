@@ -502,6 +502,7 @@ public:
     void set_glutKeyboardFunc(void (*f)(unsigned char key, int x, int y));
     void set_glutSpecialFunc (void (*f)(int key, int x, int y));
     void set_glutMouseFunc   (void (*f)(int, int, int, int ));
+	void set_glutPassiveMotionFunc(void(*f)(int x, int y));
 
     void set_glutDisplayFunc(void (*f)(void)) {glutDisplayFunc(f);}
     void set_glutTimerFunc(unsigned int millis, void (*f)(int value), int value)
