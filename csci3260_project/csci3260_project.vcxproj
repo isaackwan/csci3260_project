@@ -84,6 +84,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>Dependencies\glui\msvc\lib;Dependencies\glui;Dependencies\glm;Dependencies\freeglut;Dependencies\glew;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;USE_FREEGLUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>Dependencies\glui\msvc\lib;Dependencies\glui;Dependencies\glm;Dependencies\freeglut;Dependencies\glew;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
